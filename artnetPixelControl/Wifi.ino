@@ -1,4 +1,4 @@
-bool ConnectWifi(int attemptNo) {
+bool ConnectWifi() {
   bool state = true;
   int i = 0;
 
@@ -7,7 +7,7 @@ bool ConnectWifi(int attemptNo) {
   Serial.println("Connecting to WiFi");
   
   // Wait for connection
-  Serial.print("Connecting - attempt " + String(attemptNo));
+  Serial.print("Connecting");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -25,12 +25,7 @@ bool ConnectWifi(int attemptNo) {
     Serial.println(WiFi.localIP());
   } else {
     Serial.println("");
-    if (attemptNo < 3) {
-      Serial.println("Retrying.");
-      state = ConnectWifi(++attemptNo);
-    } else {
-      Serial.println("Connection failed.");
-    }
+    Serial.println("Retrying.");
   }
   
   return state;
@@ -40,10 +35,11 @@ void reconnectWifiIfDisconnected()
 {
   if ( (WiFi.status() != WL_CONNECTED) )
   {
-    Serial.println("WiFi connection lost. Reconnecting...");
+    Serial.println("WiFi connection lost. Reconnecting.");
     WiFi.disconnect();
     WiFi.end();
-    ConnectWifi(0);
-    artnet.begin();
+    if (ConnectWifi()) {
+      artnet.begin();
+    }
   }
 }
