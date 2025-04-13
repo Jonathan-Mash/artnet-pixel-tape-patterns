@@ -2,41 +2,30 @@ void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* d
   if (universe == ART_CONTROL_UNIVERSE)
   {
     FastLED.setBrightness(data[ART_CONTROL_BRIGHTNESS_ADDR - 1]);
-    FastLED.show();
+    // FastLED.show();
 
     switch(data[ART_CONTROL_PROGRAMME_ADDR - 1]) {
-      case 0 ... 24:
-        currentSequence = &speechWipeIn;
+      case 0:
+        currentSequence = &staticBlackSnap;
         break;
-      case 25 ... 49:
-        currentSequence = &speechWipeOut;
+      case 1 ... 49:
+        currentSequence = &fire;
         break;
-      case 50 ... 74:
-        currentSequence = &speech;
+      case 50 ... 99:
+        currentSequence = &Fire2012WithPalette;
         break;
-      case 75 ... 99:
-        currentSequence = &spinningBlueCyan;
+      case 100 ... 149:
+        currentSequence = &Fire2018;
         break;
-      case 100 ... 124:
-        currentSequence = &greenAnimation;
+      case 150 ... 249:
+        currentSequence = &firePaletteWithGlitter;
         break;
-      case 125 ... 149:
-        currentSequence = &spinningOrange;
+      case 250:
+        currentSequence = &staticBlack;
         break;
-      case 150 ... 174:
-        currentSequence = &pulsingPurple;
+      case 251 ... 255:
+        currentSequence = &pauseSequence;
         break;
-      case 175 ... 199:
-        currentSequence = &staticBlue;
-        break;
-      case 200 ... 224:
-        currentSequence = &testProgram1;
-        break;
-      case 225 ... 249:
-        currentSequence = &testProgram2;
-        break;
-      case 250 ... 255:
-        currentSequence = &pause;
     }
   }
 }
